@@ -1,0 +1,60 @@
+<nav
+  tuiTabBar
+  class="tabs"
+  [(activeItemIndex)]="activeItemIndex"
+  class="navigation_bottom_menu__wrapper">
+  <a icon="house" routerLinkActive tuiTabBarItem [routerLink]="routes.Home">
+    Домой
+  </a>
+  <a
+    icon="message-circle-question"
+    routerLinkActive
+    tuiTabBarItem
+    [routerLink]="routes.Faq">
+    Faq
+  </a>
+  <button
+    (click)="showNewHolidayDialog()"
+    tuiTabBarItem
+    type="button"
+    [badge]="3"
+    icon="hand-metal">
+    Добавить праздник
+  </button>
+</nav>
+
+<ng-template
+  let-observer
+  [tuiSheetDialogOptions]="{ label: 'Добавить праздник', size: 's' }"
+  [(tuiSheetDialog)]="newHolidayDialog">
+  <form [formGroup]="newHolidayForm">
+    <div class="create_new_holiday__input_wrapper">
+      <tui-input class="create_new_holiday__input" formControlName="title">
+        Название
+      </tui-input>
+
+      <tui-textarea
+        class="create_new_holiday__input"
+        formControlName="description"
+        >Описание
+      </tui-textarea>
+
+      <tui-input class="create_new_holiday__input" formControlName="location"
+        >Место проведения
+      </tui-input>
+
+      <div class="calendar__wrapper">
+        <tui-calendar [value]="value" (dayClick)="onDayClick($event)" />
+      </div>
+      <div *ngIf="value">Выбрана дата: {{ value }}</div>
+    </div>
+  </form>
+  <button
+    class="create_new_holiday__button"
+    size="l"
+    tuiButton
+    type="button"
+    (click)="createNewHoliday()">
+    Добавить
+  </button>
+</ng-template>

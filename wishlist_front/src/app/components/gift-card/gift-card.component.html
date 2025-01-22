@@ -1,0 +1,233 @@
+<tui-swipe-actions>
+  <div tuiAppearance="floating" tuiCell>
+    <div class="card__wrapper">
+      <div class="title_date__wrapper">
+        <div class="wish_card_title">
+          {{ titleHoliday }}
+          @if (!isOwner) {
+            ({{ whoCreator }})
+          }
+        </div>
+        <div>{{ date_holiday }}</div>
+      </div>
+      <div>{{ description_holiday }}</div>
+      <hr />
+      <div>{{ location_holiday }}</div>
+    </div>
+  </div>
+  <div tuiSwipeAction class="swipe_actions__button_wrapper">
+    <tui-loader
+      class="loader"
+      [inheritColor]="isLoaderActive"
+      [overlay]="isLoaderActive"
+      [showLoader]="isLoaderActive">
+      <button
+        iconStart="@tui.eye"
+        size="s"
+        (click)="showListOfPresentsDialog()"
+        tuiIconButton
+        type="button"></button>
+    </tui-loader>
+    @if (isOwner) {
+      <button
+        iconStart="@tui.share"
+        size="s"
+        tuiIconButton
+        (click)="openLink()"
+        type="button"></button>
+      <button
+        appearance="accent"
+        iconStart="@tui.trash-2"
+        size="s"
+        tuiIconButton
+        (click)="showDeleteDialog()"
+        type="button"></button>
+    }
+
+    <!-- Нужно добавить уведомление -->
+    @if (!isOwner) {
+      <button
+        appearance="accent"
+        iconStart="@tui.trash-2"
+        size="s"
+        tuiIconButton
+        (click)="openDeleteReletionDialog()"
+        type="button"></button>
+    }
+  </div>
+</tui-swipe-actions>
+
+<ng-template
+  let-observer
+  [tuiSheetDialogOptions]="listOfPresentsDialogOptions"
+  [(tuiSheetDialog)]="isListOfPresentsDialogOpen">
+  <div class="gift_card_wishes__wrapper">
+    <tui-accordion class="container">
+      @for (wish of wishList; track $index) {
+        <div class="gift_card_accordion__wrapper">
+          <div class="gift_card_accordion__item">
+            <tui-accordion-item>
+              {{ wish.title }}
+              <ng-template tuiAccordionItemContent>
+                <div>
+                  <div>
+                    {{ wish.description }}
+                  </div>
+                  <a href="{{ wish.urlLink }}" target="_blank"
+                    >ссылка на подарок</a
+                  >
+                </div>
+                @if (isOwner) {
+                  <button
+                    size="xs"
+                    tuiButton
+                    (click)="openDialoogDeleteWish(wish.wishUuId)">
+                    Удалить
+                  </button>
+                } @else {
+                  @if (wish.isBusy) {
+                    @if (wish.isReservedReturnedUser) {
+                      <tui-loader
+                        class="loader"
+                        [inheritColor]="isLoaderActive"
+                        [overlay]="isLoaderActive"
+                        [showLoader]="isLoaderActive">
+                        <button size="xs" tuiButton (click)="reserveWish(wish)">
+                          Забронировано (вами)
+                        </button>
+                      </tui-loader>
+                    } @else {
+                      <button disabled="true" size="xs">Забронировано</button>
+                    }
+                  } @else {
+                    <tui-loader
+                      class="loader"
+                      [inheritColor]="isLoaderActive"
+                      [overlay]="isLoaderActive"
+                      [showLoader]="isLoaderActive">
+                      <button size="xs" tuiButton (click)="reserveWish(wish)">
+                        Забронировать
+                      </button>
+                    </tui-loader>
+                  }
+                }
+              </ng-template>
+            </tui-accordion-item>
+          </div>
+        </div>
+      }
+    </tui-accordion>
+
+    @if (isOwner) {
+      <hr />
+      <div>
+        <div class="add_gift__title">Добавить подарок</div>
+        <form [formGroup]="newWishListForm">
+          <div class="input_wrapper">
+            <tui-input class="create_new_wish__input" formControlName="title"
+              >Название</tui-input
+            >
+            <tui-input
+              class="create_new_wish__input"
+              formControlName="description"
+              >Описание</tui-input
+            >
+            <tui-input class="create_new_wish__input" formControlName="urlLink"
+              >Ссылка</tui-input
+            >
+          </div>
+        </form>
+        <button
+          tuiButton
+          class="add_gift__button"
+          type="button"
+          (click)="addNewWishToList()">
+          Добавить
+        </button>
+      </div>
+    }
+  </div>
+</ng-template>
+
+<!------ Start ------ Подтверждение удаления -->
+<ng-template
+  let-observer
+  [tuiSheetDialogOptions]="options"
+  [(tuiSheetDialog)]="isDeleteDialogOpen">
+  <div class="delete_holiday__button_wrapper">
+    <button
+      appearance="accent"
+      tuiButton
+      type="button"
+      size="m"
+      (click)="deleteHoliday()">
+      Удалить
+    </button>
+    <button
+      tuiButton
+      size="m"
+      type="button"
+      (click)="isDeleteDialogOpen = false">
+      Отменить
+    </button>
+  </div>
+</ng-template>
+
+<ng-template
+  let-observer
+  [tuiSheetDialogOptions]="dialogOptionDeleteWish"
+  [(tuiSheetDialog)]="isDialogOptionDeleteWishOpen">
+  <div class="delete_holiday__button_wrapper">
+    <tui-loader
+      class="loader"
+      [inheritColor]="isLoaderActive"
+      [overlay]="isLoaderActive"
+      [showLoader]="isLoaderActive">
+      <button
+        appearance="accent"
+        tuiButton
+        type="button"
+        size="m"
+        (click)="deleteWish()">
+        Удалить
+      </button>
+    </tui-loader>
+    <button
+      tuiButton
+      size="m"
+      type="button"
+      (click)="isDialogOptionDeleteWishOpen = false">
+      Отменить
+    </button>
+  </div>
+</ng-template>
+
+<ng-template
+  let-observer
+  [tuiSheetDialogOptions]="dialogOptionDeleteRelationHoliday"
+  [(tuiSheetDialog)]="isDialogRelationDelHolidayOpen">
+  <div class="delete_holiday__button_wrapper">
+    <tui-loader
+      class="loader"
+      [inheritColor]="isLoaderActive"
+      [overlay]="isLoaderActive"
+      [showLoader]="isLoaderActive">
+      <button
+        appearance="accent"
+        tuiButton
+        type="button"
+        size="m"
+        (click)="deleteRelationHoliday()">
+        Удалить
+      </button>
+    </tui-loader>
+    <button
+      tuiButton
+      size="m"
+      type="button"
+      (click)="isDialogRelationDelHolidayOpen = false">
+      Отменить
+    </button>
+  </div>
+</ng-template>
+<!------ End ------ Подтверждение удаления -->

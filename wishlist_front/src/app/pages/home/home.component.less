@@ -1,0 +1,74 @@
+.main_title_wrapper {
+  padding: 50px 0 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.menu_bottom {
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+}
+
+
+.new-holiday-date__wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.new-holiday__date {
+  margin-left: 1rem;
+
+  &_empty {
+      color: var(--tui-text-tertiary);
+  }
+}
+
+
+
+
+///  ---------
+
+.card-container {
+  position: relative;
+  // width: 100%;
+  // max-width: 400px;
+  // margin: 20px auto;
+  // overflow: hidden;
+}
+
+.card {
+  // background-color: #f4f4f4;
+  // border-radius: 8px;
+  // padding: 20px;
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-out;
+}
+
+.swipe-hint {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #888;
+  animation: slide-left 1s ease-in-out infinite alternate;
+}
+
+.hint-arrow {
+  margin-left: 5px;
+  font-size: 16px;
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}

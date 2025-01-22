@@ -1,0 +1,39 @@
+<div>
+  <!-- @if (showSwipeHint) {
+    <div class="card-container">
+      <div
+        class="card"
+        (touchstart)="onSwipeStart($event)"
+        (touchmove)="onSwipeMove($event)"
+        (touchend)="onSwipeEnd($event)">
+        <app-gift-card
+          [whoCreator]="templateGiftCard.whoCreator"
+          [isOwner]="templateGiftCard.isOwner"
+          [uuidHoliday]="templateGiftCard.uuIdHoliday"
+          [(allHolidays)]="allWishes"
+          [holidayId]="templateGiftCard.id"
+          [titleHoliday]="templateGiftCard.title"
+          [description_holiday]="templateGiftCard.description"
+          [date_holiday]="templateGiftCard.date"
+          [location_holiday]="templateGiftCard.location" />
+      </div>
+      <div class="swipe-hint">
+        <span class="hint-text">Свайп влево</span>
+      </div>
+    </div>
+  } -->
+
+  <div class="tui_text_massive main_title_wrapper">Создай свой праздник</div>
+  @for (giftList of allWishes; track giftList.id) {
+    <app-gift-card
+      [whoCreator]="giftList.whoCreator"
+      [isOwner]="giftList.isOwner"
+      [uuidHoliday]="giftList.uuIdHoliday"
+      [(allHolidays)]="allWishes"
+      [holidayId]="giftList.id"
+      [titleHoliday]="giftList.title"
+      [description_holiday]="giftList.description"
+      [date_holiday]="giftList.date"
+      [location_holiday]="giftList.location" />
+  }
+</div>

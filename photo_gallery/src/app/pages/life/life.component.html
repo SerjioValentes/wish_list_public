@@ -1,0 +1,9 @@
+<div class="p-5">
+  <h2>{{ photoData?.title }}</h2>
+  <p-divider/>
+  <div class="grid-cols-2">
+    @for (photo of photoData?.Images; track photo.id) {
+      <p-image styleClass="!bg-white !p-5 m-1" src={{photo?.url}} alt="Image" [preview]="true" />
+    }
+  </div>
+</div>

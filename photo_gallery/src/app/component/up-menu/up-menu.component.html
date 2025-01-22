@@ -1,0 +1,13 @@
+    <p-toolbar>
+        <ng-template pTemplate="start">
+        </ng-template>
+    
+        <ng-template pTemplate="end">
+        <p-menu #menu [model]="items" [popup]="true" />
+        <p-avatar
+            (click)="menu.toggle($event)"
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            [style]="{ width: '32px', height: '32px' }"
+        />
+    </ng-template>
+    </p-toolbar>
